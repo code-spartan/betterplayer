@@ -75,9 +75,18 @@ class BetterPlayerControlsConfiguration {
   ///Time to hide controls
   final Duration controlsHideTime;
 
+  ///Enable back button
+  final bool enableBackButton;
+
+  ///The icon of back button
+  final IconData backButtonIcon;
+
+  ///On back button tab
+  final Function()? onBackButton;
+
   ///Parameter used to build custom controls
-  final Widget Function(BetterPlayerController controller,
-      Function(bool) onPlayerVisibilityChanged)? customControlsBuilder;
+  final Widget Function(BetterPlayerController controller, Function(bool) onPlayerVisibilityChanged)?
+      customControlsBuilder;
 
   ///Parameter used to change theme of the player
   final BetterPlayerTheme? playerTheme;
@@ -205,6 +214,9 @@ class BetterPlayerControlsConfiguration {
     this.qualitiesIcon = Icons.hd_outlined,
     this.subtitlesIcon = Icons.closed_caption_outlined,
     this.audioTracksIcon = Icons.audiotrack_outlined,
+    this.enableBackButton = false,
+    this.backButtonIcon = Icons.arrow_back,
+    this.onBackButton = null,
     this.overflowMenuIconsColor = Colors.black,
     this.forwardSkipTimeInMilliseconds = 10000,
     this.backwardSkipTimeInMilliseconds = 10000,
