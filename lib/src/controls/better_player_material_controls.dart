@@ -188,6 +188,7 @@ class _BetterPlayerMaterialControlsState extends BetterPlayerControlsState<Bette
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     if (_controlsConfiguration.enableBackButton) _buildBackButton(),
+                    const Spacer(),
                     if (_controlsConfiguration.enablePip)
                       _buildPipButtonWrapperWidget(controlsNotVisible, _onPlayerHide)
                     else
@@ -249,10 +250,15 @@ class _BetterPlayerMaterialControlsState extends BetterPlayerControlsState<Bette
       child: BetterPlayerMaterialClickableWidget(
         onTap: () {
           if (_controlsConfiguration.onBackButton != null) {
-            _controlsConfiguration.onBackButton!();
+            if (_betterPlayerController!.isFullScreen) {
+              setState(() {
+                _betterPlayerController!.exitFullScreen();
+              });
+              _controlsConfiguration.onBackButton!();
+            } else {
+              _controlsConfiguration.onBackButton!();
+            }
           }
-          Navigator.pop(context);
-          if (_betterPlayerController!.isFullScreen) Navigator.pop(context);
         },
         child: Padding(
           padding: const EdgeInsets.all(8),

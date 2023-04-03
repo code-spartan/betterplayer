@@ -466,6 +466,7 @@ class _BetterPlayerCupertinoControlsState extends BetterPlayerControlsState<Bett
       child: Row(
         children: <Widget>[
           if (_controlsConfiguration.enableBackButton) _buildBackButton(),
+          Spacer(),
           if (_controlsConfiguration.enableFullscreen)
             _buildExpandButton(
               backgroundColor,
@@ -559,14 +560,14 @@ class _BetterPlayerCupertinoControlsState extends BetterPlayerControlsState<Bett
     return GestureDetector(
       onTap: () {
         if (_controlsConfiguration.onBackButton != null) {
-          _controlsConfiguration.onBackButton!();
-        }
-        Navigator.pop(context);
-        if (_betterPlayerController!.isFullScreen) {
-          setState(() {
-            _betterPlayerController!.exitFullScreen();
-          });
-          Navigator.pop(context);
+          if (_betterPlayerController!.isFullScreen) {
+            setState(() {
+              _betterPlayerController!.exitFullScreen();
+            });
+            _controlsConfiguration.onBackButton!();
+          } else {
+            _controlsConfiguration.onBackButton!();
+          }
         }
       },
       child: Padding(
