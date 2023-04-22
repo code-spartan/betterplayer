@@ -84,6 +84,12 @@ class BetterPlayerControlsConfiguration {
   ///On back button tab
   final Function()? onBackButton;
 
+  //Detect if Trailer
+  final bool isTrailer;
+
+  //on trailer button click
+  final Function()? onTrailer;
+
   ///Parameter used to build custom controls
   final Widget Function(BetterPlayerController controller, Function(bool) onPlayerVisibilityChanged)?
       customControlsBuilder;
@@ -217,6 +223,8 @@ class BetterPlayerControlsConfiguration {
     this.enableBackButton = false,
     this.backButtonIcon = Icons.arrow_back,
     this.onBackButton = null,
+    this.isTrailer = false,
+    this.onTrailer = null,
     this.overflowMenuIconsColor = Colors.black,
     this.forwardSkipTimeInMilliseconds = 10000,
     this.backwardSkipTimeInMilliseconds = 10000,

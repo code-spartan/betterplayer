@@ -271,6 +271,32 @@ class _BetterPlayerMaterialControlsState extends BetterPlayerControlsState<Bette
     );
   }
 
+  Widget _buildTrailerButton() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: BetterPlayerMaterialClickableWidget(
+        onTap: () {
+          if (_controlsConfiguration.onTrailer != null) {
+            _controlsConfiguration.onTrailer!();
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+          decoration: const BoxDecoration(
+              color: Color.fromRGBO(155, 28, 252, 1), borderRadius: BorderRadius.all(Radius.circular(4))),
+          child: const Text(
+            'Download',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildMoreButton() {
     return BetterPlayerMaterialClickableWidget(
       onTap: () {
@@ -309,6 +335,11 @@ class _BetterPlayerMaterialControlsState extends BetterPlayerControlsState<Bette
                   else
                     _controlsConfiguration.enableProgressText ? Expanded(child: _buildPosition()) : const SizedBox(),
                   const Spacer(),
+                  if (_controlsConfiguration.isTrailer) _buildTrailerButton() else const SizedBox(),
+                  if (_controlsConfiguration.isTrailer)
+                    SizedBox(
+                      width: 10,
+                    ),
                   if (_controlsConfiguration.enableMute) _buildMuteButton(_controller) else const SizedBox(),
                   if (_controlsConfiguration.enableFullscreen) _buildExpandButton() else const SizedBox(),
                 ],
