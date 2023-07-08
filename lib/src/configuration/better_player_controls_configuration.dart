@@ -84,6 +84,11 @@ class BetterPlayerControlsConfiguration {
   ///On back button tab
   final Function()? onBackButton;
 
+  //Title text
+  final String? titleText;
+
+  final TextStyle? titleStyle;
+
   //Detect if Trailer
   final bool isTrailer;
 
@@ -225,6 +230,8 @@ class BetterPlayerControlsConfiguration {
     this.onBackButton = null,
     this.isTrailer = false,
     this.onTrailer = null,
+    this.titleText = null,
+    this.titleStyle = null,
     this.overflowMenuIconsColor = Colors.black,
     this.forwardSkipTimeInMilliseconds = 10000,
     this.backwardSkipTimeInMilliseconds = 10000,

@@ -188,7 +188,7 @@ class _BetterPlayerMaterialControlsState extends BetterPlayerControlsState<Bette
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     if (_controlsConfiguration.enableBackButton) _buildBackButton(),
-                    const Spacer(),
+                    _buildTitle(),
                     if (_controlsConfiguration.enablePip)
                       _buildPipButtonWrapperWidget(controlsNotVisible, _onPlayerHide)
                     else
@@ -269,6 +269,23 @@ class _BetterPlayerMaterialControlsState extends BetterPlayerControlsState<Bette
         ),
       ),
     );
+  }
+
+  Widget _buildTitle() {
+    if (_controlsConfiguration.titleText != null) {
+      return Expanded(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+          child: Text(
+            _controlsConfiguration.titleText!,
+            textAlign: TextAlign.left,
+            style: _controlsConfiguration.titleStyle,
+          ),
+        ),
+      );
+    } else {
+      return Spacer();
+    }
   }
 
   Widget _buildTrailerButton() {
