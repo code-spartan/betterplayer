@@ -325,11 +325,11 @@ class _BetterPlayerMaterialControlsState extends BetterPlayerControlsState<Bette
   Widget _buildPrevButton() {
     return BetterPlayerMaterialClickableWidget(
       onTap: () {
-        if (_controlsConfiguration.onNext != null) {
-          _controlsConfiguration.onNext!();
+        if (_controlsConfiguration.onPrev != null) {
+          _controlsConfiguration.onPrev!();
         }
       },
-      child: _controlsConfiguration.nextBtn ?? SizedBox(),
+      child: _controlsConfiguration.prevBtn ?? SizedBox(),
     );
   }
 
