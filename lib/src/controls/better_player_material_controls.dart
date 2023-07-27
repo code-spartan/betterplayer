@@ -371,6 +371,16 @@ class _BetterPlayerMaterialControlsState extends BetterPlayerControlsState<Bette
                   else
                     _controlsConfiguration.enableProgressText ? Expanded(child: _buildPosition()) : const SizedBox(),
                   const Spacer(),
+                  if (_controlsConfiguration.isNext) _buildNextButton() else const SizedBox(),
+                  if (_controlsConfiguration.isNext)
+                    SizedBox(
+                      width: 10,
+                    ),
+                  if (_controlsConfiguration.isPrev) _buildPrevButton() else const SizedBox(),
+                  if (_controlsConfiguration.isPrev)
+                    SizedBox(
+                      width: 10,
+                    ),
                   if (_controlsConfiguration.isTrailer) _buildTrailerButton() else const SizedBox(),
                   if (_controlsConfiguration.isTrailer)
                     SizedBox(
