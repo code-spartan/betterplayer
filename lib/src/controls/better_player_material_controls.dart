@@ -311,6 +311,28 @@ class _BetterPlayerMaterialControlsState extends BetterPlayerControlsState<Bette
     );
   }
 
+  Widget _buildNextButton() {
+    return BetterPlayerMaterialClickableWidget(
+      onTap: () {
+        if (_controlsConfiguration.onNext != null) {
+          _controlsConfiguration.onNext!();
+        }
+      },
+      child: _controlsConfiguration.nextBtn ?? SizedBox(),
+    );
+  }
+
+  Widget _buildPrevButton() {
+    return BetterPlayerMaterialClickableWidget(
+      onTap: () {
+        if (_controlsConfiguration.onNext != null) {
+          _controlsConfiguration.onNext!();
+        }
+      },
+      child: _controlsConfiguration.nextBtn ?? SizedBox(),
+    );
+  }
+
   Widget _buildMoreButton() {
     return BetterPlayerMaterialClickableWidget(
       onTap: () {

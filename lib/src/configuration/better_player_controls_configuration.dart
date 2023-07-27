@@ -92,12 +92,16 @@ class BetterPlayerControlsConfiguration {
   //Next Widget
   final bool isNext;
 
-  final Widget? nextBtn;  
+  final Widget? nextBtn;
+
+  final Function()? onNext;
 
   //Prev Widget
   final bool isPrev;
 
-  final Widget? prevBtn;  
+  final Widget? prevBtn;
+
+  final Function()? onPrev;
 
   //Detect if Trailer
   final bool isTrailer;
@@ -242,10 +246,12 @@ class BetterPlayerControlsConfiguration {
     this.onTrailer = null,
     this.titleText = null,
     this.titleStyle = null,
+    this.onNext = null,
     this.isNext = false,
     this.nextBtn = null,
     this.isPrev = false,
     this.prevBtn = null,
+    this.onPrev = null,
     this.overflowMenuIconsColor = Colors.black,
     this.forwardSkipTimeInMilliseconds = 10000,
     this.backwardSkipTimeInMilliseconds = 10000,
