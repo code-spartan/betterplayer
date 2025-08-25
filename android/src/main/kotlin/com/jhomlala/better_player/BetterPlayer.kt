@@ -374,21 +374,17 @@ internal class BetterPlayer(
     }
 
     private fun buildMediaSource(
-        uri: Uri,
-        mediaDataSourceFactory: DataSource.Factory,
-        formatHint: String?,
-        cacheKey: String?,
-        context: Context
-    ): MediaSource {
-        val type: Int
-        if (formatHint == null) {
-            var lastPathSegment = uri.lastPathSegment
-            if (lastPathSegment == null) {
-                lastPathSegment = ""
-            }
-            type = Util.inferContentType(lastPathSegment)
-        } else {
-            type = when (formatHint) {
+    uri: Uri,
+    mediaDataSourceFactory: DataSource.Factory,
+    formatHint: String?,
+    cacheKey: String?,
+    context: Context
+): MediaSource {
+    val type: Int = if (formatHint == null) {
+        val lastPathSegment = uri.lastPathSegment ?: ""
+        Util.inferContentType(lastPathSegment)
+    } else {
+            when (formatHint) {
                 FORMAT_SS -> C.TYPE_SS
                 FORMAT_DASH -> C.TYPE_DASH
                 FORMAT_HLS -> C.TYPE_HLS
@@ -396,47 +392,44 @@ internal class BetterPlayer(
                 else -> -1
             }
         }
-        val mediaItemBuilder = MediaItem.Builder()
-        mediaItemBuilder.setUri(uri)
-        if (cacheKey != null && cacheKey.isNotEmpty()) {
-            mediaItemBuilder.setCustomCacheKey(cacheKey)
-        }
-        val mediaItem = mediaItemBuilder.build()
+
+        val mediaItem = MediaItem.Builder()
+            .setUri(uri)
+            .apply { if (!cacheKey.isNullOrEmpty()) setCustomCacheKey(cacheKey) }
+            .build()
+
+    // ✅ Always define drmProvider first
         val drmProvider: DrmSessionManagerProvider = if (drmSessionManager != null) {
             val manager = drmSessionManager!!  // safe local capture
-            DrmSessionManagerProvider { _: MediaItem ->
-                manager
-            }
+            DrmSessionManagerProvider { _: MediaItem -> manager }
         } else {
-            DrmSessionManagerProvider { _: MediaItem ->
-                DrmSessionManager.DRM_UNSUPPORTED
-            }
+            DrmSessionManagerProvider { _: MediaItem -> DrmSessionManager.DRM_UNSUPPORTED }
         }
+
         return when (type) {
             C.TYPE_SS -> SsMediaSource.Factory(
                 DefaultSsChunkSource.Factory(mediaDataSourceFactory),
                 DefaultDataSource.Factory(context, mediaDataSourceFactory)
-            )
-                .setDrmSessionManagerProvider(drmSessionManagerProvider)
-                .createMediaSource(mediaItem)
+            ).setDrmSessionManagerProvider(drmProvider)
+            .createMediaSource(mediaItem)
+
             C.TYPE_DASH -> DashMediaSource.Factory(
                 DefaultDashChunkSource.Factory(mediaDataSourceFactory),
                 DefaultDataSource.Factory(context, mediaDataSourceFactory)
-            )
-                .setDrmSessionManagerProvider(drmSessionManagerProvider)
-                .createMediaSource(mediaItem)
+            ).setDrmSessionManagerProvider(drmProvider)
+            .createMediaSource(mediaItem)
+
             C.TYPE_HLS -> HlsMediaSource.Factory(mediaDataSourceFactory)
-                .setDrmSessionManagerProvider(drmSessionManagerProvider)
+                .setDrmSessionManagerProvider(drmProvider)
                 .createMediaSource(mediaItem)
+
             C.TYPE_OTHER -> ProgressiveMediaSource.Factory(
                 mediaDataSourceFactory,
                 DefaultExtractorsFactory()
-            )
-                .setDrmSessionManagerProvider(drmSessionManagerProvider)
-                .createMediaSource(mediaItem)
-            else -> {
-                throw IllegalStateException("Unsupported type: $type")
-            }
+            ).setDrmSessionManagerProvider(drmProvider)
+            .createMediaSource(mediaItem)
+
+            else -> throw IllegalStateException("Unsupported type: $type")
         }
     }
 
