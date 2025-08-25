@@ -403,7 +403,10 @@ internal class BetterPlayer(
         }
         val mediaItem = mediaItemBuilder.build()
         val drmSessionManagerProvider: DrmSessionManagerProvider =
-            DrmSessionManagerProvider { drmSessionManager ?: throw IllegalStateException("DRM required but missing") 
+        if (drmSessionManager != null) {
+            DrmSessionManagerProvider { drmSessionManager }
+        } else {
+            DrmSessionManagerProvider { _, _ -> DrmSessionManager.DRM_UNSUPPORTED }
         }
         return when (type) {
             C.TYPE_SS -> SsMediaSource.Factory(
