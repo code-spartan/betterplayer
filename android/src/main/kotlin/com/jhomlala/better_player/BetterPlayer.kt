@@ -58,7 +58,6 @@ import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.drm.DrmSessionManagerProvider
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector.SelectionOverride
-import com.google.android.exoplayer2.trackselection.TrackSelectionOverrides
 import com.google.android.exoplayer2.upstream.DataSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.util.Util
