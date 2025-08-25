@@ -402,11 +402,15 @@ internal class BetterPlayer(
             mediaItemBuilder.setCustomCacheKey(cacheKey)
         }
         val mediaItem = mediaItemBuilder.build()
-        val drmSessionManagerProvider: DrmSessionManagerProvider =
-        if (drmSessionManager != null) {
-            DrmSessionManagerProvider { drmSessionManager }
+        val drmProvider: DrmSessionManagerProvider = if (drmSessionManager != null) {
+            val manager = drmSessionManager!!  // safe local capture
+            DrmSessionManagerProvider { _: MediaItem ->
+                manager
+            }
         } else {
-            DrmSessionManagerProvider { _, _ -> DrmSessionManager.DRM_UNSUPPORTED }
+            DrmSessionManagerProvider { _: MediaItem ->
+                DrmSessionManager.DRM_UNSUPPORTED
+            }
         }
         return when (type) {
             C.TYPE_SS -> SsMediaSource.Factory(
