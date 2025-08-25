@@ -403,9 +403,8 @@ internal class BetterPlayer(
             mediaItemBuilder.setCustomCacheKey(cacheKey)
         }
         val mediaItem = mediaItemBuilder.build()
-        var drmSessionManagerProvider: DrmSessionManagerProvider? = null
-        drmSessionManager?.let { drmSessionManager ->
-            drmSessionManagerProvider = DrmSessionManagerProvider { drmSessionManager }
+        val drmSessionManagerProvider: DrmSessionManagerProvider =
+            DrmSessionManagerProvider { drmSessionManager ?: throw IllegalStateException("DRM required but missing") 
         }
         return when (type) {
             C.TYPE_SS -> SsMediaSource.Factory(
@@ -555,7 +554,7 @@ internal class BetterPlayer(
             parametersBuilder.clearVideoSizeConstraints()
             parametersBuilder.setMaxVideoBitrate(Int.MAX_VALUE)
         }
-        trackSelector.setParameters(parametersBuilder)
+        trackSelector.setParameters(parametersBuilder.build());
     }
 
     fun seekTo(location: Int) {
@@ -707,17 +706,13 @@ internal class BetterPlayer(
         if (mappedTrackInfo != null) {
             val builder = trackSelector.parameters.buildUpon()
                 .setRendererDisabled(rendererIndex, false)
-                .setTrackSelectionOverrides(
-                    TrackSelectionOverrides.Builder().addOverride(
-                        TrackSelectionOverrides.TrackSelectionOverride(
-                            mappedTrackInfo.getTrackGroups(
-                                rendererIndex
-                            ).get(groupIndex)
-                        )
-                    ).build()
+                .setSelectionOverride(
+                    rendererIndex,
+                    mappedTrackInfo.getTrackGroups(rendererIndex),
+                    DefaultTrackSelector.SelectionOverride(groupIndex, groupElementIndex)
                 )
 
-            trackSelector.setParameters(builder)
+            trackSelector.setParameters(builder.build())
         }
     }
 
